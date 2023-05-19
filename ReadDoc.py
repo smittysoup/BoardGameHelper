@@ -9,7 +9,7 @@ from chromadb.utils import embedding_functions
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 from langchain.document_loaders import (TextLoader, UnstructuredMarkdownLoader,
-                                        UnstructuredWordDocumentLoader)
+                                        UnstructuredWordDocumentLoader,PyPDFLoader)
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.llms import AzureOpenAI, OpenAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -31,12 +31,13 @@ class FileTypes(str, enum.Enum):
     Docx = '.docx'
     Markdown = '.md'
     Text = '.txt'
+    PDF = '.pdf'
 
-UploadPath = r'CustomerCommunities\API\uploads'
+UploadPath = r'TerraMystica'
 
 # Defining main function
 def main():
-    persistDirectoryPath = "Collections_v2"
+    persistDirectoryPath = UploadPath + "\Collections"
     
     # Process the newly uploaded files
     ProcessFile(persistDirectoryPath)
@@ -69,6 +70,9 @@ def GetFileType(filePath: str):
 def ReadData(filePath: str, fileType: str):
     loader = None
     data = None
+    if(fileType == FileTypes.PDF):
+        loader = PyPDFLoader(filePath)
+        data = loader.load_and_split()
     if(fileType == FileTypes.Docx):
         loader = UnstructuredWordDocumentLoader(filePath)
         data = loader.load()

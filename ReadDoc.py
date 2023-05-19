@@ -100,7 +100,7 @@ def Embeddings(texts:List[any], persistDirectoryPath:str):
 def RetrieveDocs(query:str,persistDirectoryPath:str):
     embedding = OpenAIEmbeddings(model="text-embedding-ada-002", deployment="Embeddings",chunk_size=1)
     vectordb = Chroma(persist_directory=persistDirectoryPath, embedding_function=embedding)
-    retrievedDocs = vectordb.similarity_search(query)
+    retrievedDocs = vectordb.max_marginal_relevance_search(query,k=8)
     return retrievedDocs
 
 if __name__ == '__main__':

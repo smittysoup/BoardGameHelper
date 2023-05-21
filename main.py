@@ -44,7 +44,8 @@ def get_token():
 def chat():
     message1 = request.json.get('message1', '')
     message2 = request.json.get('message2', '')
-    b = bgQA.chat_with_user("How many priests do darklings start with?",r"games\Terra-Mystica\Collections")
+    b = bgQA.chat_with_user("what are eggs used for?",r"games\Wingspan")
+    print(b)
     return jsonify({"result": message1 + ' ' + message2})
 
 @app.route('/')

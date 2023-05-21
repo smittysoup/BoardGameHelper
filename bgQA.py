@@ -51,7 +51,9 @@ class DocQA:
     def new_chain(self):        
         #prompt for first run chain
         summarize_prompt = PromptTemplate(input_variables=['input','context'], 
-                    template=("""You are an expert board game player and teacher. You have memorized all the rules to every board game ever made. Use the rules in your memory along with any other context you have to answer the players questions. 
+                    template=("""You are an expert board game player and teacher. 
+                              You have memorized all the rules to every board game ever made. 
+                              Use the rules in your memory along with any other context you have to answer the players questions below. 
                             \n\nRules:\n{context}\nPlayer Question:\n{input}""")                        )
             
         return LLMChain(
@@ -95,6 +97,7 @@ class DocQA:
                 response = {"response": "Unable to get response from Game Master. Please try your query again."}
 
         response["response"] = response["response"].replace("\nAI: ", "").strip()
+        print(response["response"])
 
         return response
 

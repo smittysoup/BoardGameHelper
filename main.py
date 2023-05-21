@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort, render_template
 from flask_httpauth import HTTPTokenAuth
-import jwt, os, time, bgQA
+import jwt, os, time, bgQA, CreateVectorDb as cdb
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -46,12 +46,13 @@ def chat():
     prompt = request.json.get('prompt', '')
     b=bgQA.DocQA(game)
     b = b.chat_with_user(prompt)
-    print(jsonify(b))
-    return jsonify(b)
+    print(jsonify({'response': b["response"]}))
+    return jsonify({'response': b["response"]})
 
 @app.route('/')
 def main():
-    return render_template('index.html', games=get_folder_names())
+    db = cdb.VectorDB('Wingspan')
+    return render_template('index.html', games=db.get_collections())
 
 if __name__ == '__main__':
     app.run(debug=True)

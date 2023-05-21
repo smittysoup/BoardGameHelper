@@ -38,7 +38,6 @@
             <button id="send-button">➤</button>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             let token = null;  // Store your token here
         
@@ -68,7 +67,7 @@
                         'Authorization': 'Bearer ' + token
                     },
                     success: function(data) {
-                        $("#chat-box").append('<p>' + data.result + '</p>');
+                        $("#chat-box").append('<p>' + data.response + '</p>');
                         $("#chat-input").val('');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

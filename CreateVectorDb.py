@@ -122,14 +122,14 @@ class VectorDB():
         retrievedDocs = self._vectorDB.max_marginal_relevance_search(query,k)
         return retrievedDocs
     
-    def explore_db(self):
-        print(self._vectorDB.get())
-        print(self._vectorDB._client._peek())
-        print(self._vectorDB._client.list_collections())
+    def get_collections(self):
+        game_list = self._vectorDB._client.list_collections()
+        texts = [g.name for g in game_list]
+        return texts
 
 if __name__ == '__main__':
-    vect=VectorDB("Wingspan") #update collection name as needed
-   #vect.ProcessFile(r'processed')
-    print(vect.RetrieveDoc("Ruby-Throated Hummingbird"))
+    vect=VectorDB("Terra-Mystica")
+    #vect.ProcessFile(r'processed')
+    #print(vect.RetrieveDoc("Ruby-Throated Hummingbird"))
     
     

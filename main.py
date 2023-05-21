@@ -47,7 +47,7 @@ def chat():
 
 @app.route('/')
 def main():
-    return render_template('index.html', strings=get_folder_names())
+    return render_template('index.html', games=get_folder_names())
 
 if __name__ == '__main__':
     app.run(debug=True)

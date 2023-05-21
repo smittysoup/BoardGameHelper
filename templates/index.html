@@ -56,13 +56,13 @@
         
             // Send chat messages with the token in the Authorization header
             $("#send-button").click(function() {
-                let message1 = $("#drop-down-box").val();
-                let message2 = $("#chat-input").val();
-                console.log(message1, message2);
+                let game = $("#drop-down-box").val();
+                let query = $("#chat-input").val();
+                console.log(game, query);
                 $.ajax({
                     url: '/api/chat',
                     type: 'POST',
-                    data: JSON.stringify({message1: message1, message2: message2}),
+                    data: JSON.stringify({game: game, prompt: query}),
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + token

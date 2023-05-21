@@ -24,6 +24,7 @@ class FileTypes(str, enum.Enum):
     Markdown = '.md'
     Text = '.txt'
     PDF = '.pdf'
+    Parquet = '.parquet'
 
 class VectorDB():
     def __init__(self,collectionName:str = "default"):        
@@ -36,7 +37,7 @@ class VectorDB():
         self._vectorDB.persist()
 
     # Process the newly uploaded files and delete them after processing
-    def ProcessFile(self, movepath:str):
+    def ProcessFile(self, movepath:str): 
         '''
         main function to process the files
         1. Reads a list of files in the passed directory
@@ -44,27 +45,13 @@ class VectorDB():
         3. Converts the text to tokens for embedding.  After conversion, moves the file to a processed folder
         4. Embeds the tokens and stores the embedding in a persistent DB
         '''
-        texts = []
-        for filename in os.listdir(self._persistDirectoryPath):
-            print(filename) # just for debugging
-            filePath = os.path.join(self._persistDirectoryPath, filename)
-            # checking if it is a file
-            if os.path.isfile(filePath):
-                fileType = GetFileType(filePath)
-                print(fileType) # just for debugging
-                data = ReadData(filePath, fileType)                
-                #Move the file after processing
-                MoveFilePath(filePath, movepath)                
-                if(data is not None):
-                    texts = TextToTokens(data)
-                    Embeddings(texts, self._persistDirectoryPath)      
-                  
+        texts = []          
         #Move the file after processing
         def MoveFilePath(filePath:str, movepath:str):
             '''
             moves the file to a processed folder
             '''
-            movepath = os.path.join(movepath, self._persistDirectoryPath)
+            movepath = os.path.join(movepath)
             shutil.move(filePath, movepath)
                         
         # Get file extension
@@ -107,6 +94,26 @@ class VectorDB():
             except:
                 return False
 
+        for filename in os.listdir(self._persistDirectoryPath):
+            print(filename) # just for debugging            
+            filePath = os.path.join(self._persistDirectoryPath, filename)
+            # checking if it is a file
+            if os.path.isfile(filePath):
+                
+                fileType = GetFileType(filePath)
+                
+                #Skip Parquet files (that is the db file)
+                if fileType != FileTypes.Parquet:
+                    data = ReadData(filePath, fileType)    
+                else: 
+                    data = None           
+               
+                if(data is not None):
+                    texts = TextToTokens(data)
+                    Embeddings(texts)  
+                    #Move the file after processing
+                    MoveFilePath(filePath, movepath)    
+
     # Retrieve the docs from persisted DB
     def RetrieveDoc(self,query:str,k:int=4):
         print(self._vectorDB.get())
@@ -116,3 +123,4 @@ class VectorDB():
 if __name__ == '__main__':
     vect=VectorDB("Wingspan") #update collection name as needed
     vect.ProcessFile(r'processed')
+    

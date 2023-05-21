@@ -31,10 +31,10 @@ class DocQA:
          self._conv_memory = ConversationBufferMemory(
                             memory_key="chat_history_lines"
                         )
+         self._vect = CreateVectorDb.VectorDB(self._path)
 
     def get_response_from_docs(self,summarize_chain):
-        VectorDb=CreateVectorDb.VectorDB(self._path)
-        documents = VectorDb.RetrieveDocs(query=self._prompt)
+        documents = self._vect.RetrieveDocs(query=self._prompt,k=8)
 
         context = ""
         for dc in documents:

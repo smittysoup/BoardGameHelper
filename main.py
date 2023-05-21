@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort, render_template
 from flask_httpauth import HTTPTokenAuth
-import jwt, os, time, bgQA
+import jwt, os, time, bgQA, CreateVectorDb
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme='Bearer')
@@ -42,11 +42,12 @@ def get_token():
 @app.route('/api/chat', methods=['POST'])
 @auth.login_required
 def chat():
-    message1 = request.json.get('message1', '')
-    message2 = request.json.get('message2', '')
-    b = bgQA.chat_with_user("what are eggs used for?",r"games\Wingspan")
-    print(b)
-    return jsonify({"result": message1 + ' ' + message2})
+    
+    game = request.json.get('game', '') 
+    prompt = request.json.get('prompt', '')
+    b=bgQA.DocQA(game)
+    b = b.chat_with_user(prompt)
+    return jsonify(b)
 
 @app.route('/')
 def main():

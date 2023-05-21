@@ -51,7 +51,7 @@ class VectorDB():
             '''
             moves the file to a processed folder
             '''
-            movepath = os.path.join(movepath)
+            movepath = os.path.join(self._persistDirectoryPath, movepath)
             shutil.move(filePath, movepath)
                         
         # Get file extension
@@ -119,8 +119,14 @@ class VectorDB():
         print(self._vectorDB.get())
         retrievedDocs = self._vectorDB.max_marginal_relevance_search(query,k)
         return retrievedDocs
+    
+    def explore_db(self):
+        print(self._vectorDB.list_collections())
+        print(self._vectorDB.get_collection(self._collectionName))
 
 if __name__ == '__main__':
     vect=VectorDB("Wingspan") #update collection name as needed
     vect.ProcessFile(r'processed')
+    vect.explore_db()
+    
     

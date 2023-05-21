@@ -33,8 +33,8 @@ class DocQA:
                         )
          self._vect = CreateVectorDb.VectorDB(self._path)
 
-    def get_response_from_docs(self,summarize_chain):
-        documents = self._vect.RetrieveDocs(query=self._prompt,k=8)
+    def get_response_from_docs(self,summarize_chain,prompt):
+        documents = self._vect.RetrieveDoc(query=prompt,k=8)
 
         context = ""
         for dc in documents:
@@ -44,7 +44,7 @@ class DocQA:
         #print(context)
 
         try:
-            return summarize_chain({"input":self._prompt, "context":context})
+            return summarize_chain({"input":prompt, "context":context})
         except:
             return {"response": "Unable to get response from Game Master. Please try your query again."}
 
@@ -75,14 +75,14 @@ class DocQA:
     
     def update_memories(self,prompt,response):
         self._conv_memory.chat_memory.add_user_message(prompt)
-        self._conv_memory.chat_memory.add_ai_message(response)
+        self._conv_memory.chat_memory.add_ai_message(response["response"])
 
     def chat_with_user(self, prompt):    
 
         if not self._conv_memory.chat_memory.messages:
             chain = self.new_chain() 
             try:
-                response=self.get_response_from_docs(chain, prompt)               
+                response = self.get_response_from_docs(chain, prompt)               
             except:
                 response = {"response": "Unable to get response from Game Master. Please try your query again."}
             self.update_memories(prompt,response)
@@ -98,5 +98,8 @@ class DocQA:
 
         return response
 
+if __name__ == '__main__':
+    dqa = DocQA(r'Wingspan')
+    print(dqa.chat_with_user("How many players can play?"))
         
        

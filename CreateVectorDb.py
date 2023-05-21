@@ -34,6 +34,8 @@ class VectorDB():
         #Document is a base class that contains a string(content) and metadata dictionary
         self._embedding = OpenAIEmbeddings(model="text-embedding-ada-002", deployment="Embeddings",chunk_size=1)
         self._vectorDB = Chroma(collection_name=self._collectionName, embedding_function=self._embedding,persist_directory=self._persistDirectoryPath)
+        
+    def persist_db(self):
         self._vectorDB.persist()
 
     # Process the newly uploaded files and delete them after processing
@@ -116,17 +118,18 @@ class VectorDB():
 
     # Retrieve the docs from persisted DB
     def RetrieveDoc(self,query:str,k:int=4):
-        print(self._vectorDB.get())
+        #print(self._vectorDB.get())
         retrievedDocs = self._vectorDB.max_marginal_relevance_search(query,k)
         return retrievedDocs
     
     def explore_db(self):
-        print(self._vectorDB.list_collections())
-        print(self._vectorDB.get_collection(self._collectionName))
+        print(self._vectorDB.get())
+        print(self._vectorDB._client._peek())
+        print(self._vectorDB._client.list_collections())
 
 if __name__ == '__main__':
     vect=VectorDB("Wingspan") #update collection name as needed
-    vect.ProcessFile(r'processed')
-    vect.explore_db()
+   #vect.ProcessFile(r'processed')
+    print(vect.RetrieveDoc("Ruby-Throated Hummingbird"))
     
     

@@ -33,20 +33,22 @@ class FileTypes(str, enum.Enum):
     Text = '.txt'
     PDF = '.pdf'
 
-UploadPath = r'TerraMystica'
+UploadPath = r'\games\Wingspan'
 
 # Defining main function
 def main():
-    persistDirectoryPath = UploadPath + "\Collections"
+    persistDirectoryPath = UploadPath
     
     # Process the newly uploaded files
     ProcessFile(persistDirectoryPath)
 
 # Process the newly uploaded files and delete them after processing
 def ProcessFile(persistDirectoryPath: str):
+    print(os.getcwd())
     for filename in os.listdir(UploadPath):
+        print(filename)
         filePath = os.path.join(UploadPath, filename)
-        
+        print(filePath)
         # checking if it is a file
         if os.path.isfile(filePath):
             fileType = GetFileType(filePath)
@@ -58,8 +60,8 @@ def ProcessFile(persistDirectoryPath: str):
                 isSuccess = Embeddings(texts, persistDirectoryPath)
                 
                 # Delete the file after processing
-                if(isSuccess):
-                    os.remove(filePath)
+                #if(isSuccess):
+                    #os.remove(filePath)
                     
 # Get file extension
 def GetFileType(filePath: str):

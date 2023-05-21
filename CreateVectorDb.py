@@ -26,13 +26,13 @@ class FileTypes(str, enum.Enum):
     PDF = '.pdf'
 
 class VectorDB():
-    def __init__(self,collectionName:str):        
+    def __init__(self,collectionName:str = "default"):        
         self._collectionName = collectionName
         self._persistDirectoryPath = r'games'
         #chroma uses from_docs, which takes a list of documents and returns a vectorstore
         #Document is a base class that contains a string(content) and metadata dictionary
         self._embedding = OpenAIEmbeddings(model="text-embedding-ada-002", deployment="Embeddings",chunk_size=1)
-        self._vectorDB = Chroma(collection_name=self._collectionName, embedding=self._embedding,persist_directory=self._persistDirectoryPath)
+        self._vectorDB = Chroma(collection_name=self._collectionName, embedding_function=self._embedding,persist_directory=self._persistDirectoryPath)
         self._vectorDB.persist()
 
     # Process the newly uploaded files and delete them after processing
@@ -61,6 +61,9 @@ class VectorDB():
                   
         #Move the file after processing
         def MoveFilePath(filePath:str, movepath:str):
+            '''
+            moves the file to a processed folder
+            '''
             movepath = os.path.join(movepath, self._persistDirectoryPath)
             shutil.move(filePath, movepath)
                         
@@ -71,6 +74,9 @@ class VectorDB():
 
         # Read the data from a docx file.
         def ReadData(filePath: str, fileType: str):
+            '''
+            Select loader based on file type.  Convert the file to text
+            '''
             loader = None
             data = None
             if(fileType == FileTypes.PDF):
@@ -107,7 +113,6 @@ class VectorDB():
         retrievedDocs = self._vectorDB.max_marginal_relevance_search(query,k)
         return retrievedDocs
 
-#if __name__ == '__main__':
-    #main()
-    #r = RetrieveDocs("What is automata",r'games\Wingspan')
-    #print(r)
+if __name__ == '__main__':
+    vect=VectorDB("Wingspan") #update collection name as needed
+    vect.ProcessFile(r'processed')

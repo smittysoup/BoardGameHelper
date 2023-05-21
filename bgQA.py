@@ -97,7 +97,7 @@ class DocQA:
                 response = {"response": "Unable to get response from Game Master. Please try your query again."}
 
         response["response"] = response["response"].replace("\nAI: ", "").strip()
-        print(response["response"])
+        #print(response["response"])
 
         return response
 

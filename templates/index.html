@@ -9,20 +9,39 @@
                 color: #eee;
                 font-family: Arial, sans-serif;
                 font-size: 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                height: 100vh;
+                padding: 20px 0;
             }
             #chat-box {
+                width: 80%;
                 height: 80%;
                 overflow-y: scroll;
             }
             #input-box {
                 position: fixed;
                 bottom: 0;
-                width: 100%;
+                width: 80%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             #send-button {
                 background-color: transparent;
                 border: none;
                 cursor: pointer;
+                font-size: 20px; /* original 16px + 4px */
+            }
+            #chat-input,
+            #drop-down-box {
+                font-size: 18px; /* original 16px + 2px */
+                font-family: 'Calibri', sans-serif; /* use Calibri or fallback to sans-serif */
+            }
+            #drop-down-box {
+                margin-bottom: 20px;
             }
         </style>
     </head>

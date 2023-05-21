@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify, abort, render_template
 from flask_httpauth import HTTPTokenAuth
-import jwt, os, time
+import jwt, os, time, bgQA
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme='Bearer')
 
 SECRET_KEY = 'secret-key'  # Ideally, this should be in a config file or environment variable
 EXPIRATION_TIME = 3600  # 1 hour
+
 
 def get_folder_names():
     root_directory = os.getcwd()
@@ -43,6 +44,7 @@ def get_token():
 def chat():
     message1 = request.json.get('message1', '')
     message2 = request.json.get('message2', '')
+    b = bgQA.chat_with_user("How many priests do darklings start with?",r"games\Terra-Mystica\Collections")
     return jsonify({"result": message1 + ' ' + message2})
 
 @app.route('/')

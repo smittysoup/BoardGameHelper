@@ -115,4 +115,4 @@ def UploadFile():
         
        
 if __name__ == '__main__':
-    chat_with_user("How many priests do darklings start with?",r"TerraMystica\Collections")
+    chat_with_user()

@@ -1,31 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Chat Application</title>
-    <style>
-        body {
-            background-color: #333;
-            color: #eee;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-        }
-        #chat-box {
-            height: 80%;
-            overflow-y: scroll;
-        }
-        #input-box {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        #send-button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+
     <!DOCTYPE html>
     <html>
     <head>
@@ -111,55 +84,5 @@
         </script>
         
     </body>
-    <div id="chat-box"></div>
-    <div id="input-box">
-        <input type="text" id="chat-input">
-        <button id="send-button">➤</button>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        let token = null;  // Store your token here
     
-        // Function to call /api/token and store the returned token
-        function getToken() {
-            $.get('/api/token?username=admin&password=password', function(data) {
-                token = data.token;
-            });
-        }
-    
-        // Call getToken when the page loads
-        $(document).ready(function() {
-            getToken();
-        });
-    
-        // Send chat messages with the token in the Authorization header
-        $("#send-button").click(function() {
-            let message1 = $("#drop-down-box").val();
-            let message2 = $("#chat-input").val();
-            $.ajax({
-                url: '/api/chat',
-                type: 'POST',
-                data: JSON.stringify({message1: message1, message2: message2}),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                success: function(data) {
-                    $("#chat-box").append('<p>' + data.result + '</p>');
-                    $("#chat-input").val('');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status == 401) {
-                        // Token is expired, get a new one
-                        getToken();
-                    }
-                    // Handle other errors as needed
-                }
-            });
-            
-        });
-    </script>
-    
-</body>
 </html>

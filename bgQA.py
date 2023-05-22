@@ -79,7 +79,10 @@ class DocQA:
         self._conv_memory.chat_memory.add_user_message(prompt)
         self._conv_memory.chat_memory.add_ai_message(response["response"])
 
-    def chat_with_user(self, prompt):    
+    def chat_with_user(self, prompt): 
+        
+        if not (prompt.endswith('.') or prompt.endswith('!') or prompt.endswith('?')):
+            prompt += '?'  
 
         if not self._conv_memory.chat_memory.messages:
             chain = self.new_chain() 

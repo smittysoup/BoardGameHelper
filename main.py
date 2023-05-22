@@ -52,7 +52,12 @@ def chat():
 @app.route('/')
 def main():
     db = cdb.VectorDB('Wingspan')
-    return render_template('index.html', games=db.get_collections())
+    col_list = db.get_collections()
+    col_formatted = []
+    for col in col_list:
+        col = col.replace("-", " ")
+        col_formatted.append(col)
+    return render_template('index.html', games=col_formatted)
 
 if __name__ == '__main__':
     app.run(debug=True)

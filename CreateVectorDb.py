@@ -128,7 +128,7 @@ class VectorDB():
         return texts
 
 if __name__ == '__main__':
-    vect=VectorDB("Terra-Mystica")
+    vect=VectorDB("Quacks-of-Quedlinburg")
     vect.ProcessFile(r'processed')
     #print(vect.RetrieveDoc("Ruby-Throated Hummingbird"))
     

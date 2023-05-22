@@ -2,10 +2,10 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Chat Application</title>
+        <title>Board Game Helper</title>
         <style>
             body {
-                background-color: #333;
+                background-color: #000;
                 color: #eee;
                 font-family: Arial, sans-serif;
                 font-size: 16px;
@@ -14,38 +14,52 @@
                 align-items: center;
                 justify-content: space-between;
                 height: 100vh;
-                padding: 20px 0;
+            }
+            #drop-down-box {
+                margin-bottom: 2px;
+                margin-top: 2px;
+                position: top;
+                width: 40%;
+                font-size: 18px; /* original 16px + 2px */
+                font-family: 'Calibri', sans-serif; /* use Calibri or fallback to sans-serif */
             }
             #chat-box {
-                width: 80%;
-                height: 80%;
+                background: #333;
+                position: relative-top;
+                height: 70%;
+                width: 80%;                
                 overflow-y: scroll;
             }
             #input-box {
-                position: fixed;
-                bottom: 0;
+                position: relative-top;
                 width: 80%;
                 display: flex;
-                justify-content: center;
+                justify-content: right;
                 align-items: center;
             }
             #send-button {
                 background-color: transparent;
                 border: none;
+                color: #fff;
                 cursor: pointer;
                 font-size: 20px; /* original 16px + 4px */
             }
-            #chat-input,
-            #drop-down-box {
-                font-size: 18px; /* original 16px + 2px */
+            #chat-input
+            {
+                width: 100%;
+                height: 100%;
+                padding-top: 2px;
+                font-size: 14px;
                 font-family: 'Calibri', sans-serif; /* use Calibri or fallback to sans-serif */
-            }
-            #drop-down-box {
-                margin-bottom: 20px;
-            }
+            },
+
+
         </style>
+
     </head>
     <body>
+        <h3>Board Game Guru</h3>
+        Choose a game and ask a question! I will explain the rules to you<br>
         <select id="drop-down-box">
             {% for string in games %}
                 <option>{{ string }}</option>
@@ -53,7 +67,7 @@
         </select>
         <div id="chat-box"></div>
         <div id="input-box">
-            <input type="text" id="chat-input">
+            <input type="text" id="chat-input" >
             <button id="send-button">➤</button>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

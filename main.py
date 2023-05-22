@@ -32,9 +32,10 @@ def verify_token(token):
 
 @app.route('/api/token')
 def get_token():
+    #TODO: add login and db to handle users if required.  Right now, this is open access but I can still track tokens
     username = request.args.get('username')
     password = request.args.get('password')
-    if username == 'admin' and password == 'password':  # In real application, you should check this in your database
+    if username == 'admin' and password == 'password':  # don't have a real database yet
         token = jwt.encode({'username': username, 'exp': time.time() + EXPIRATION_TIME}, SECRET_KEY, algorithm="HS256")
         return jsonify({'token': token, 'duration': EXPIRATION_TIME})
     return abort(401)

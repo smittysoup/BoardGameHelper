@@ -16,6 +16,8 @@ jobs:
       run: |
           touch .env
           echo OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} >> .env
+          echo USERNAME=${{ secrets.USERNAME }} >> .env
+          echo PASSWORD=${{ secrets.PASSWORD }} >> .env
           cat .env
           
     - name: Check Out Repository

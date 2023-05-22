@@ -96,7 +96,7 @@
         
             // Function to call /api/token and store the returned token
             function getToken() {
-                $.get('/api/token?username=admin&password=password', function(data) {
+                $.get(`/api/token?username=admin&password=password`, function(data) {
                     token = data.token;
                 });
             }

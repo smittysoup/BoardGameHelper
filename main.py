@@ -43,6 +43,7 @@ def get_token():
 @auth.login_required
 def chat():    
     game = request.json.get('game', '') 
+    game = game.replace(" ", "-")
     prompt = request.json.get('prompt', '')
     b=bgQA.DocQA(game)
     b = b.chat_with_user(prompt)

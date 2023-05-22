@@ -30,6 +30,22 @@
                 width: 80%;                
                 overflow-y: scroll;
             }
+            .user-chat {
+                color: #fff;
+                align-self: flex-end;
+                margin: 1em;
+                padding: 1em;
+                background-color: #333;
+                border-radius: 10px;
+            }            
+            .ai-chat {
+                color: #fff;
+                align-self: flex-start;
+                margin: 1em;
+                padding: 1em;
+                background-color: #555;
+                border-radius: 10px;
+            }
             #input-box {
                 position: relative-top;
                 width: 80%;
@@ -59,7 +75,11 @@
     </head>
     <body>
         <h3>Board Game Guru</h3>
+        <div style="font-size: 14px; align: center;">
         Choose a game and ask a question! I will explain the rules to you<br>
+        </div><div style="font-size: 12px; align: center;">
+        *As a chat bot based on a large language model, sometimes I say dumb or completely wrong stuff.  If this happens, try asking again and I may correct myself. 
+        </div>
         <select id="drop-down-box">
             {% for string in games %}
                 <option>{{ string }}</option>
@@ -84,12 +104,24 @@
             // Call getToken when the page loads
             $(document).ready(function() {
                 getToken();
+
+                $("#chat-input").on('keypress', function (e) {
+                    if (e.which == 13) { // 13 is the keycode for the Enter key
+                        e.preventDefault(); // Prevent the default action (submitting the form)
+                        $("#send-button").click(); // Trigger the click event of the send button
+                    }
+                });
+                
             });
         
             // Send chat messages with the token in the Authorization header
             $("#send-button").click(function() {
                 let game = $("#drop-down-box").val();
                 let query = $("#chat-input").val();
+                
+                let userMessageDiv = $('<div class="user-chat"><p>' + query + '</p></div>');
+                $("#chat-box").append(userMessageDiv);
+
                 console.log(game, query);
                 $.ajax({
                     url: '/api/chat',
@@ -100,7 +132,8 @@
                         'Authorization': 'Bearer ' + token
                     },
                     success: function(data) {
-                        $("#chat-box").append('<p>' + data.response + '</p>');
+                        let aiMessageDiv = $('<div class="ai-chat"><p>' + data.response + '</p></div>');
+                        $("#chat-box").append(aiMessageDiv);
                         $("#chat-input").val('');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

@@ -9,15 +9,8 @@ from langchain.vectorstores import Chroma
 
 load_dotenv()
 
-# OpenAI Settings
-os.environ["OPENAI_API_TYPE"] = "azure"
-os.environ["OPENAI_API_BASE"] = "https://cchmodels.openai.azure.com/"
-os.environ["OPENAI_API_VERSION"] = "2023-03-15-preview"
-
-openai.api_base="https://cchmodels.openai.azure.com/"
-openai.api_type="azure"
 openai.api_key=os.getenv("OPENAI_API_KEY")
-openai.api_version="2023-03-15-preview"
+
 
 class FileTypes(str, enum.Enum):
     Docx = '.docx'
@@ -32,7 +25,7 @@ class VectorDB():
         self._persistDirectoryPath = r'games'
         #chroma uses from_docs, which takes a list of documents and returns a vectorstore
         #Document is a base class that contains a string(content) and metadata dictionary
-        self._embedding = OpenAIEmbeddings(model="text-embedding-ada-002", deployment="Embeddings",chunk_size=1)
+        self._embedding = OpenAIEmbeddings(model="text-embedding-ada-002")
         self._vectorDB = Chroma(collection_name=self._collectionName, embedding_function=self._embedding,persist_directory=self._persistDirectoryPath)
         
     def persist_db(self):

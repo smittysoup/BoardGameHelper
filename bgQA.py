@@ -5,27 +5,17 @@ from dotenv import load_dotenv
 from langchain.chains import ConversationChain, LLMChain,SequentialChain, TransformChain
 from langchain.memory import  ConversationBufferMemory    
 from langchain.prompts import PromptTemplate
-from langchain.llms import AzureOpenAI
-
+from langchain.llms import OpenAI
 
 load_dotenv()
-
-os.environ["OPENAI_API_TYPE"] = "azure"
-os.environ["OPENAI_API_BASE"] = "https://cchmodels.openai.azure.com/"
-os.environ["OPENAI_API_VERSION"] = "2023-03-15-preview"
-os.environ["OPENAI_API_KEY"] = "fb8a38d152ca43a9a84b7b9e996bc1d0"
-
-openai.api_base="https://cchmodels.openai.azure.com/"
-openai.api_type="azure"
 openai.api_key=os.getenv("OPENAI_API_KEY")
-openai.api_version="2023-03-15-preview"
 
 class DocQA:
     def __init__(self,path):
          self._path=path
          self._persistDirectoryPath = r'games'
-         self._llm = AzureOpenAI(
-                engine="davinci",
+         self._llm = OpenAI(
+                model_name="text-davinci-003",
                 temperature=0
             )
          self._conv_memory = ConversationBufferMemory(

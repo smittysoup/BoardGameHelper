@@ -1,0 +1,8 @@
+openai
+python-dotenv
+langchain
+chromadb
+flask_httpauth
+flask_cors
+jwt
+

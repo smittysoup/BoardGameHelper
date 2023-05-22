@@ -1,0 +1,46 @@
+name: Build and Push Docker Image to ACR
+
+on:
+
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Create env file'
+      run: |
+          touch .env
+          echo OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} >> .env
+          cat .env
+          
+    - name: Check Out Repository
+      uses: actions/checkout@v2
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: pythonchatapp.azurecr.io
+        username: pythonchatapp
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        dockerfile: dockerfile
+        push: true
+        tags: pythonchatapp.azurecr.io/bgh-ap:latest
+
+      
+    - name: Update Azure Container Instance
+      run: |
+       az container delete --resource-group learnerapp --name aci-bgh-ap --yes
+       az container create --restart-policy OnFailure --resource-group learnerapp --name aci-bgh-ap --image pythonchatapp.azurecr.io/bgh-ap:latest --dns-name-label boardgamehelper-web --registry-username pythonchatapp --registry-password  ${{ secrets.ACR_PASSWORD }} --ports 5000 --command-line "gunicorn --timeout=6000 -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} --bind=0.0.0.0:5000 --workers=4 main:app"  

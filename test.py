@@ -40,4 +40,4 @@ def chat(game, prompt):
     return jsonify(b)
 
 if __name__ == '__main__':
-   chat("Wingspan","Prompt")
+   chat("Wingspan","how many eggs are there in the game?")

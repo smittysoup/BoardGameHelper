@@ -53,7 +53,7 @@ class VectorDB():
             '''
             moves the file to a processed folder
             '''
-            movepath = os.path.join(self._persistDirectoryPath, movepath)
+            movepath = os.path.join(os.getcwd(), movepath)
             shutil.move(filePath, movepath)
                         
         # Get file extension
@@ -129,7 +129,7 @@ class VectorDB():
 
 if __name__ == '__main__':
     vect=VectorDB("Terra-Mystica")
-    #vect.ProcessFile(r'processed')
+    vect.ProcessFile(r'processed')
     #print(vect.RetrieveDoc("Ruby-Throated Hummingbird"))
     
     
